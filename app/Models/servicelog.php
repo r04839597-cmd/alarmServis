@@ -2,17 +2,32 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class servicelog extends Model
+class ServiceLog extends Model
 {
-    use HasFactory;
+    protected $fillable = [
+        'vehicle_id',
+        'workshop_id',
+        'service_date',
+        'odometer_at_service',
+        'total_cost',
+        'details',
+    ];
 
-    public function vehicle() {
-        return $this->belongsTo(vehicle::class);
+    protected function casts(): array
+    {
+        return [
+            'service_date'        => 'date',
+            'odometer_at_service' => 'integer',
+            'total_cost'          => 'integer',
+            'details'             => 'array',
+        ];
     }
-    public function workshop() {
-        return $this->belongsTo(workshop::class);
+
+    public function vehicle(): BelongsTo
+    {
+        return $this->belongsTo(Vehicle::class);
     }
-} 
+}

@@ -15,6 +15,13 @@ class User extends Authenticatable
     public const ROLE_ADMIN_BENGKEL = 2;
     public const ROLE_USER = 3;
 
+    // Kamus penerjemah teks role ke angka ID
+    public const ROLE_MAP = [
+        'superadmin' => self::ROLE_SUPERADMIN,
+        'admin_bengkel' => self::ROLE_ADMIN_BENGKEL,
+        'user' => self::ROLE_USER,
+    ];
+
     // Menentukan kolom mana saja yang boleh diisi (mass assignable)
     protected $fillable = [
         'name',
@@ -52,11 +59,12 @@ class User extends Authenticatable
     }
 
     // Helper Redirect yang diminta Claude untuk mengatur arah setelah login
+    // Helper Redirect yang diminta Claude untuk mengatur arah setelah login
     public function getRedirectRoute() {
         return match((int) $this->role_id) {
             self::ROLE_SUPERADMIN => '/superadmin/dashboard',
-            self::ROLE_ADMIN_BENGKEL => '/admin/dashboard',
-            self::ROLE_USER => '/dashboard',
+            self::ROLE_ADMIN_BENGKEL => '/admin-bengkel/dashboard',
+            self::ROLE_USER => '/user/dashboard',
             default => '/',
         };
     }

@@ -11,16 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('role_id')->constrained('roles')->onDelete('cascade');
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
-        });
+      Schema::create('users', function (Blueprint $table) {
+    $table->id();
+    $table->string('name');
+    $table->string('phone_number')->unique();
+    $table->string('password');
+    $table->unsignedBigInteger('role_id')->default(3);
+    $table->enum('notification_preference', ['wa_only', 'web_only', 'both'])->default('web_only');
+    $table->enum('status', ['active', 'pending_approval'])->default('active');
+    $table->rememberToken();
+    $table->timestamps();
+});
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
