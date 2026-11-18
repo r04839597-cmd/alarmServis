@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -54,8 +55,9 @@ class User extends Authenticatable
         return $this->hasMany(Vehicle::class);
     }
 
-    public function workshop() {
-        return $this->hasOne(Workshop::class, 'admin_id');
+    public function workshops(): HasMany
+    {
+        return $this->hasMany(Workshop::class, 'admin_user_id');
     }
 
     // Helper Redirect yang diminta Claude untuk mengatur arah setelah login

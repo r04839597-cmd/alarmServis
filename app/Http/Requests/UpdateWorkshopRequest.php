@@ -2,28 +2,15 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Foundation\Http\FormRequest;
-
-class UpdateWorkshopRequest extends FormRequest
+class UpdateWorkshopRequest extends StoreWorkshopRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
-        return false;
-    }
+        $workshop = $this->route('workshop');
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array<mixed>|string>
-     */
-    public function rules(): array
-    {
-        return [
-            //
-        ];
+        // 404 agar keberadaan bengkel milik admin lain tidak terbuka.
+        abort_unless($workshop && $workshop->admin_user_id === auth()->id(), 404);
+
+        return true;
     }
 }
